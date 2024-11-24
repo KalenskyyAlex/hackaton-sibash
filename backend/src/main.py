@@ -7,7 +7,12 @@ from pathlib import Path
 
 from routers.query import query_router
 from routers.dataset import dataset_router
+from fastapi.middleware.cors import CORSMiddleware
 import os
+
+origins = [
+    "http://localhost:3000",
+]
 
 conn = sqlite3.connect(":memory:", check_same_thread=False)
 
@@ -25,6 +30,13 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Include example routes
 app.include_router(dataset_router, prefix="/api/dataset")

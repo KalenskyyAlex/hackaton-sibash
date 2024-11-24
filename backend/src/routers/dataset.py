@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Response
 
 dataset_router = APIRouter()
 
@@ -17,7 +17,9 @@ def get_by_key(key: str = None, provider: str = None):
     }
 
 @dataset_router.get("/list")
-def list_by_query(query: str = None):
+def list_by_query(response: Response, query: str = None):
+    print(query)
+    response.headers['Access-Control-Allow-Origin'] = '*'
     from src.util.provider.provider import Provider
     from src.util.provider.impl.world_bank import WorldBank
     # from src.util.provider.impl.un_data import UNData

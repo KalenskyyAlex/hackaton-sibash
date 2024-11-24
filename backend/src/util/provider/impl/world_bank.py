@@ -48,5 +48,5 @@ class WorldBank(Provider):
             conn.commit()
 
         return {
-            "status": "ok"
+            "status": "suke"
         }
