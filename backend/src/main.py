@@ -1,8 +1,14 @@
+import sqlite3
+
 from fastapi import FastAPI
 import sys
 from pathlib import Path
+
+from routers.query import query_router
 from routers.dataset import dataset_router
 import os
+
+conn = sqlite3.connect(":memory:", check_same_thread=False)
 
 def load_env_file(file_path):
     with open(file_path, "r") as file:
@@ -20,6 +26,7 @@ app = FastAPI()
 
 # Include example routes
 app.include_router(dataset_router, prefix="/api/dataset")
+app.include_router(query_router, prefix="/api/query")
 
 @app.get("/")
 async def root():

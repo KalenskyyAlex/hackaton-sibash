@@ -1,9 +1,10 @@
 from src.util.provider.provider import Provider
 import requests
 import csv
-import sqlite3
 
 from src.util.provider.provider import download_file
+
+from src.main import conn
 
 
 class WorldBank(Provider):
@@ -29,7 +30,6 @@ class WorldBank(Provider):
     def get_by_key(self, key):
         download_file(key)
 
-        conn = sqlite3.connect(':memory:')
         with open('cached.csv', newline='', encoding='utf-8') as csvfile:
             csv_reader = csv.DictReader(csvfile)
             columns = csv_reader.fieldnames  # Get column names from the CSV header
