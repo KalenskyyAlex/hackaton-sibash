@@ -32,7 +32,7 @@ def get_raw():
 
     columns = [description[0] for description in cursor.description]
 
-    results = [dict(zip(columns, row)) for row in rows]
+    results = [dict(zip(columns, row)) for row in rows][:1000]
     return {"data": results}
 
 @query_router.get("/process")
@@ -70,8 +70,21 @@ def get_raw(prompt: str = None):
         temperature=0.00000001  # Reduce randomness for stricter output
     )
 
+    from src.main import conn
+
+    cursor = conn.cursor()
+
+    cursor.execute(response.choices[0].message.content)
+
+    rows = cursor.fetchall()
+
+    columns = [description[0] for description in cursor.description]
+
+    results = [dict(zip(columns, row)) for row in rows]
+
     return {
-        "data": response.choices[0].message.content
+        "query": response.choices[0].message.content,
+        "data": results
     }
 
 @query_router.get("/")

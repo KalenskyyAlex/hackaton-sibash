@@ -1,3 +1,5 @@
+import csv
+
 from fastapi import APIRouter, Response
 
 dataset_router = APIRouter()
@@ -11,6 +13,34 @@ def get_by_key(key: str = None, provider: str = None):
             WorldBank().get_by_key(key)
         case _:
             pass
+
+    return {
+        "status": "ok"
+    }
+
+from fastapi import File, UploadFile, HTTPException
+
+@dataset_router.get("/upload")
+def upload():
+    with open('hackaton_population.csv', newline='', encoding='utf-8') as csvfile:
+        csv_reader = csv.DictReader(csvfile)
+        columns = csv_reader.fieldnames  # Get column names from the CSV header
+
+
+        # Create a table with column names from the CSV
+        create_table_sql = f"CREATE TABLE data ({', '.join([f'c_{col.replace(' ', '_').replace('#', '').replace('/', '_')} TEXT' for col in columns])});"
+        from src.main import conn
+        conn.execute('''DROP TABLE IF EXISTS data;''')
+        conn.execute(create_table_sql)
+
+        # Insert data into the table
+        for row in csv_reader:
+            placeholders = ', '.join(['?' for _ in columns])  # Use placeholders for safe insertion
+            insert_sql = f"INSERT INTO data ({', '.join([f'c_{col.replace(' ', '_').replace('#', '').replace('/', '_')}' for col in columns])}) VALUES ({placeholders})"
+            conn.execute(insert_sql, [row[col] for col in columns])
+
+        # Commit the transaction
+        conn.commit()
 
     return {
         "status": "ok"

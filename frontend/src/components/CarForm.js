@@ -13,6 +13,9 @@ const Dashboard = (props) => {
     const handelBunnonClick = () => {
         navigete('/Download');
     }
+    const handelBunnonClick2 = () => {
+        navigete('/download-pc');
+    }
     const prompt = useRef(null);
     const API_ROOT = "http://localhost:8000/api"
     const datasetData = useRef(null)
@@ -53,11 +56,12 @@ const Dashboard = (props) => {
         }
         else{
             prepareDataset().then((res) => {
-                fetchDataset().then((res) => {
-                    datasetData.current = res
-                    console.log(res)
-                    setLoading(false)
-                }).catch();
+                setTimeout(() => {
+                    fetchDataset().then((res) => {
+                        datasetData.current = res
+                        setLoading(false)
+                    }).catch();
+                }, 1000)
             }).catch()
         }
     }, [])
@@ -65,7 +69,10 @@ const Dashboard = (props) => {
     return (
         <div className="container">
             <div className="header">
-                <button className="upload-button" onClick={handelBunnonClick}>Upload dataset</button>
+                <div style={{gap: "16px", display: "flex"}}>
+                    <button className="upload-button" onClick={handelBunnonClick}>Search datasets</button>
+                    <button className="upload-button" onClick={handelBunnonClick2}>Upload dataset</button>
+                </div>
                 <select className="select">
                     <option>Predictive model</option>
                     <option>Model 1</option>

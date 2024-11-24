@@ -99,21 +99,22 @@
 
 .content-input {
   position: fixed;
+  margin: 20px;
   bottom: 0;
   left: 0;
-  width: 98%; 
-  background-color: #f8f9fa; 
   display: flex;
+  width: calc(100% - 60px);
   align-items: center;
   gap: 10px;
-  padding: 10px;
+  padding: 9px;
   background-color: #ffecec;
-  border-radius: 30px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 
 textarea {
   flex: 1;
-  border-radius: 20px;
+  border-radius: 8px;
   resize: none;
   padding: 10px;
   box-sizing: border-box;
@@ -122,7 +123,7 @@ textarea {
 }
 
 .search-button {
-  padding: 10px 20px;
+  padding: 18px 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #ffd6d6;

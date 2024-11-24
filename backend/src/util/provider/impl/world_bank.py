@@ -29,10 +29,13 @@ class WorldBank(Provider):
 
     def get_by_key(self, key):
         download_file(key)
+        print('a')
 
         with open('cached.csv', newline='', encoding='utf-8') as csvfile:
             csv_reader = csv.DictReader(csvfile)
             columns = csv_reader.fieldnames  # Get column names from the CSV header
+
+            conn.execute('''DROP TABLE IF EXISTS data;''')
 
             # Create a table with column names from the CSV
             create_table_sql = f"CREATE TABLE data ({', '.join([f'{col.replace(' ', '_').replace('#', '')} TEXT' for col in columns])});"
@@ -48,5 +51,5 @@ class WorldBank(Provider):
             conn.commit()
 
         return {
-            "status": "suke"
+            "status": "ok"
         }

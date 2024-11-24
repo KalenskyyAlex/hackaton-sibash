@@ -37,19 +37,21 @@ const Tabs = (props) => {
                     margin-bottom: 10px;
                 }
                 .tabs button {
+                    border-radius: 8px;
                     padding: 10px 20px;
                     cursor: pointer;
                     border: 1px solid #ccc;
-                    background-color: #f9f9f9;
+                    background-color: #ffd6d6;
                     margin-right: 5px;
                     transition: background-color 0.3s ease;
                 }
                 .tabs button.active {
-                    background-color: #007bff;
+                    background-color: #e46868;
                     color: white;
                 }
                 .tabs button:hover {
-                    background-color: #e9e9e9;
+                    background-color: black;
+                    color: white;
                 }
                 .tab-content {
                     padding: 20px;

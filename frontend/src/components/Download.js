@@ -38,7 +38,6 @@ const Download = (props) => {
     };
 
     const selectDataset = () => {
-        console.log(datasetId.current)
         navigate('/car-form-function')
     }
 
@@ -66,7 +65,6 @@ const Download = (props) => {
                             <button
                                 key={dataset.id}
                                 onClick={() => {
-                                    console.log(dataset)
                                     datasetId.current = dataset.ID
                                     setSelectedDataset(dataset)
                                     props.keyCallback(datasetId.current[0])

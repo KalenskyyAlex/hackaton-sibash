@@ -13,11 +13,10 @@ function DataTable(props) {
         //     };
         //
         //     fetchData().then();
-        console.log(props.data['data'])
     }, []);
 
     return (
-        <div>
+        <div style={{maxWidth: 'calc(100%-60px)', overflowX: "auto", overflowy: "auto", maxHeight: "60vh"}}>
             <h2>Users Data</h2>
             <table border="1">
                 <thead>
