@@ -1,5 +1,6 @@
 import sqlite3
 
+import openai
 from fastapi import FastAPI
 import sys
 from pathlib import Path
@@ -21,6 +22,7 @@ load_env_file("../public.env")
 load_env_file("../private.env")
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = FastAPI()
 

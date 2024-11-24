@@ -1,4 +1,5 @@
-ibackend/private.env
+backend/private.env
 backend/.venv
 frontend/.DS_Store
-
+*.env
+*.csv
