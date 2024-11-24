@@ -1,13 +1,19 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './CarForm.css';
 import {useNavigate} from 'react-router-dom';
+import DynamicBarChart from "./BarChart";
+import DataTable from "./Table";
+import Tabs from "./Tabs";
 
 const Dashboard = (props) => {
     const navigete = useNavigate();
+    const [loading, setLoading] = useState(true)
+    const [processed, setProcessed] = useState(false);
+    const [step, setStep] = useState(0);
     const handelBunnonClick = () => {
         navigete('/Download');
     }
-
+    const prompt = useRef(null);
     const API_ROOT = "http://localhost:8000/api"
     const datasetData = useRef(null)
 
@@ -30,14 +36,30 @@ const Dashboard = (props) => {
 
         return await data.json()
     }
+
+    const processDataset = async () => {
+        const data = await fetch(API_ROOT + "/query/process?prompt=" + prompt.current.value, {
+            headers: {
+                "Access-Control-Allow-Origin": "*"
+            }
+        })
+
+        return await data.json()
+    }
+
     useEffect(() => {
-        prepareDataset().then((res) => {
-            fetchDataset().then((res) => {
-                console.log(res);
-            }).catch();
-        }).catch();
-
-
+        if (processed) {
+            //
+        }
+        else{
+            prepareDataset().then((res) => {
+                fetchDataset().then((res) => {
+                    datasetData.current = res
+                    console.log(res)
+                    setLoading(false)
+                }).catch();
+            }).catch()
+        }
     }, [])
 
     return (
@@ -53,30 +75,20 @@ const Dashboard = (props) => {
 
             <div className="visualized-data">
                 <h3>Visualized Data</h3>
-                <div className="line-chart">
-                    <p>Line chart (placeholder)</p>
-                    <svg width="200" height="100">
-                        <polyline
-                            points="10,90 50,50 90,60 130,40 170,30"
-                            style={{fill: 'none', stroke: 'black', strokeWidth: 2}}
-                        />
-                    </svg>
-                </div>
-                <div className="gauges">
-                    <div>
-                        <p>Suspense blandit</p>
-                        <div className="gauge">50%</div>
-                    </div>
-                    <div>
-                        <p>Regestas</p>
-                        <div className="gauge">90%</div>
-                    </div>
-                </div>
+                {   loading ? <div></div> :
+                    <Tabs data={datasetData.current}/>
+                }
             </div>
 
             <div className="content-input">
-                <textarea placeholder="Text"></textarea>
-                <button className="search-button">Send</button>
+                <textarea ref={prompt} placeholder="Text"></textarea>
+                <button onClick={() => {
+                    processDataset().then((res) => {
+                        datasetData.current = res
+                        setProcessed(true)
+                        setStep(step + 1)
+                    })
+                }} className="search-button">Send</button>
             </div>
         </div>
     );
