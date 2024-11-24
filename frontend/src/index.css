@@ -2,8 +2,6 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #F7F7F7; /* Світло-сірий фон */
-  color: #333333; /* Темно-сірий текст */
   display: flex;
   flex-direction: column;
 }
